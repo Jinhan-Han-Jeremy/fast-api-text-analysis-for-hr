@@ -1,0 +1,4 @@
+name,teammembers,available_jobs,spending_days,state,requirements_satisfied
+프로젝트 목표와 범위 설정 초기,"최프로, 이덕마, 이비례","ProjectManager, BusinessOperator",3,done,TRUE
+일정과 예산 계획 수립 초기,이덕마,"ProjectManager, ProductManager",2,done,TRUE
+팀 구성 및 역할 할당 초기,이비례,ProductManager,2,done,TRUE

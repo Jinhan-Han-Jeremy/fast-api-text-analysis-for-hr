@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0  # MySQL 8.0 사용
+    container_name: mysql_db_306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+
+      # 문자셋과 정렬 방식 설정
+      MYSQL_INITDB_SKIP_TZINFO: "1"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf  # MySQL 설정 파일 마운트
+      - db_data:/var/lib/mysql
+    networks:
+      - fastapi_network
+
+  fastapi:
+    build: .  # Dockerfile로부터 이미지를 로컬에서 직접 빌드
+    container_name: my-fastapi-container-800
+    command: sh -c "uvicorn main:app --host 0.0.0.0 --port ${PORT}"  # 환경 변수 PORT 적용
+    volumes:
+      - .:/fast_api_text_analyzer  # FastAPI 애플리케이션 경로를 맞춰줌
+    ports:
+      - "${PORT}:${PORT}"   # FastAPI 포트를 호스트와 매핑
+    depends_on:
+      - db  # FastAPI 컨테이너가 db 서비스에 의존
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}  # .env 파일에서 DB_HOST 사용
+      DB_PORT: ${DB_PORT}
+      TEST_ENV: ${TEST_ENV}
+    networks:
+      - fastapi_network
+
+networks:
+  fastapi_network:  # 서비스 간 네트워크 정의
+
+volumes:
+  db_data:  # MySQL 데이터를 영구적으로 저장하기 위한 볼륨
