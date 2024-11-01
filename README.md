@@ -15,26 +15,26 @@
 
 ### tasks_history 테이블
 컬럼:
-id (INT, 자동 증가, 기본 키)
-name (VARCHAR, 최대 255자)
-teammembers (VARCHAR, 최대 255자)
-available_jobs (VARCHAR, 최대 255자)
-spending_days (INT)
-state (VARCHAR, 최대 50자)
-requirements_satisfied (BOOLEAN)
+- id (INT, 자동 증가, 기본 키)
+- name (VARCHAR, 최대 255자)
+- teammembers (VARCHAR, 최대 255자)
+- available_jobs (VARCHAR, 최대 255자)
+- spending_days (INT)
+- state (VARCHAR, 최대 50자)
+- requirements_satisfied (BOOLEAN)
 
 ### team_member 테이블
 컬럼:
-id (INT, 자동 증가, 기본 키)
-name (VARCHAR, 최대 255자)
-role (VARCHAR, 최대 255자)
-level (INT)
-state (BOOLEAN)
-performance_for_skills (JSON)
+- id (INT, 자동 증가, 기본 키)
+- name (VARCHAR, 최대 255자)
+- role (VARCHAR, 최대 255자)
+- level (INT)
+- state (BOOLEAN)
+- performance_for_skills (JSON)
 
 ### workstream_info 테이블
 컬럼:
-id (INT, 자동 증가, 기본 키)
-workstream (TEXT)
-available_jobs (VARCHAR, 최대 255자)
-FULLTEXT 인덱스 (workstream 및 available_jobs 컬럼)
+- id (INT, 자동 증가, 기본 키)
+- workstream (TEXT)
+- available_jobs (VARCHAR, 최대 255자)
+- FULLTEXT 인덱스 (workstream 및 available_jobs 컬럼)
