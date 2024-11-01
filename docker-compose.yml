@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   db:
-    image: mysql:8.0  # MySQL 8.0 사용
+    image: mysql:8.3  # MySQL 8.0 사용
     container_name: mysql_db_306
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}               #이부분 삭제 후, 도커 다시 시작 ---mysql 연결 오류 발생시
+      MYSQL_PASSWORD: ${DB_PASSWORD}       #이부분 삭제 후, 도커 다시 시작 ---mysql 연결 오류 발생시
 
       # 문자셋과 정렬 방식 설정
       MYSQL_INITDB_SKIP_TZINFO: "1"

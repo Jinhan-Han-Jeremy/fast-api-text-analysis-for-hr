@@ -89,8 +89,9 @@ async def lifespan(app: FastAPI):
             work_stream_table_query = """
             CREATE TABLE IF NOT EXISTS workstream_info (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                workstream text,
-                available_jobs VARCHAR(255)
+                workstream TEXT,
+                available_jobs VARCHAR(255),
+                FULLTEXT (workstream, available_jobs)  -- Full-Text 인덱스 생성
             );
             """
 
