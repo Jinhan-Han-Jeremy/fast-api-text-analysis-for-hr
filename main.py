@@ -71,7 +71,9 @@ async def lifespan(app: FastAPI):
                 available_jobs VARCHAR(255),
                 spending_days INT,
                 state VARCHAR(50),
-                requirements_satisfied BOOLEAN
+                requirements_satisfied BOOLEAN,
+                started_at TIMESTAMP NULL DEFAULT NULL,
+                ended_at TIMESTAMP NULL DEFAULT NULL
             );
             """
 
@@ -82,7 +84,8 @@ async def lifespan(app: FastAPI):
                 role VARCHAR(255),
                 level INT,
                 state BOOLEAN,
-                performance_for_skills JSON
+                performance_for_skills JSON,
+                achievements_score float
             );
             """
 

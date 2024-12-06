@@ -41,7 +41,9 @@ class DatabaseConnection:
             cursor.execute(create_table_query)
             self.connection.commit()
             cursor.close()
-            print("테이블이 성공적으로 생성되었습니다.")
+            create_table = create_table_query.split()
+            print(create_table[5])
+            print(" 테이블이 성공적으로 생성되었습니다.")
 
     # 테이블 초기화 함수 (기존 데이터 삭제)
     def clear_table(self, table_name):
