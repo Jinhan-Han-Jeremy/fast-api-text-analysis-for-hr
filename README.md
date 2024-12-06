@@ -1,5 +1,8 @@
+## 운용법
+- !! docker-compose 최초 실행시 2번 연속으로 실행해야 온전히 데이터 삽입 가능
 ## 주요 기능
-- **역할**: java hr auto assign 어플리케이션을 연결하여 보조적 기능들을 사용
+- **역할**: kotlin-hr-auto-assigner-time-forecast 어플리케이션을 연결하여 보조적 기능들을 사용
+- https://github.com/Jinhan-Han-Jeremy/kotlin-hr-auto-assigner-time-forecast.git
 - **데이터베이스 테이블 생성**: FastAPI 애플리케이션이 `java_hr_db` 데이터베이스에 연결하여 여러 테이블을 생성
 - **CSV 데이터 삽입**: 데이터베이스 테이블에 CSV 데이터를 삽입하여 초기 데이터 구성을 완료
 - **텍스트 분석 기능**: workstream 텍스트를 분석하고 핵심 정보를 추출하는 기능을 스프링부트 어플리케이션에 제공
@@ -22,6 +25,8 @@
 - spending_days (INT)
 - state (VARCHAR, 최대 50자)
 - requirements_satisfied (BOOLEAN)
+- started_at (TIMESTAMP)
+- ended_at (TIMESTAMP)
 
 ### team_member 테이블
 컬럼:
@@ -31,6 +36,7 @@
 - level (INT)
 - state (BOOLEAN)
 - performance_for_skills (JSON)
+- achievements_score float
 
 ### workstream_info 테이블
 컬럼:
