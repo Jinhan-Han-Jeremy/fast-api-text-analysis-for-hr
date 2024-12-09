@@ -1,4 +1,4 @@
-name,employees,difficulty,requirements
+name,employee_role,difficulty,requirements
 프로젝트 목표와 범위 설정 초기,"ProjectManager, BusinessOperator",4,
 프로젝트 목표와 범위 설정 후기,"ProjectManager, BusinessOperator",4,프로젝트 목표와 범위 설정 초기
 일정과 예산 계획 수립 초기,"ProjectManager, ProductManager",3,프로젝트 목표와 범위 설정 초기

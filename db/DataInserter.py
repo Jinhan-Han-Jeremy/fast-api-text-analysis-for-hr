@@ -11,14 +11,14 @@ class DataInserter:
             data = pd.read_csv(csv_file)
             data = data.where(pd.notnull(data), None)
             insert_query = """
-            INSERT INTO tasks (name, employees, difficulty, requirements)
+            INSERT INTO tasks (name, employee_role, difficulty, requirements)
             VALUES (%s, %s, %s, %s)
             """
             cursor = self.connection.cursor()
             for _, row in data.iterrows():
                 cursor.execute(insert_query, (
                     row['name'],
-                    row['employees'],
+                    row['employee_role'],
                     row['difficulty'],
                     row['requirements']
                 ))

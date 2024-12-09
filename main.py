@@ -57,7 +57,7 @@ async def lifespan(app: FastAPI):
             CREATE TABLE IF NOT EXISTS tasks (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255),
-                employees VARCHAR(255),
+                employee_role VARCHAR(255),
                 difficulty INT,
                 requirements TEXT
             );
