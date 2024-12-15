@@ -12,7 +12,7 @@
 **컬럼**:
 - `id` (INT, 자동 증가, 기본 키)
 - `name` (VARCHAR, 최대 255자)
-- `employees` (VARCHAR, 최대 255자)
+- `employee_role` (VARCHAR, 최대 255자)
 - `difficulty` (INT)
 - `requirements` (TEXT)
 

@@ -85,7 +85,7 @@ async def lifespan(app: FastAPI):
                 level INT,
                 state BOOLEAN,
                 performance_for_skills JSON,
-                achievements_score float
+                achievements_score FLOAT
             );
             """
 

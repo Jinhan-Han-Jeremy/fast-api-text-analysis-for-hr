@@ -42,6 +42,7 @@ class DatabaseConnection:
             self.connection.commit()
             cursor.close()
             create_table = create_table_query.split()
+
             print(create_table[5])
             print(" 테이블이 성공적으로 생성되었습니다.")
 
