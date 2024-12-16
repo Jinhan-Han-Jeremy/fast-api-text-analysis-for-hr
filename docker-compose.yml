@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
 
@@ -10,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
 #      MYSQL_USER: ${DB_USER}               #이부분 삭제 후, 도커 다시 시작 ---mysql 연결 오류 발생시
-#     MYSQL_PASSWORD: ${DB_PASSWORD}       #이부분 삭제 후, 도커 다시 시작 ---mysql 연결 오류 발생시
+#      MYSQL_PASSWORD: ${DB_PASSWORD}       #이부분 삭제 후, 도커 다시 시작 ---mysql 연결 오류 발생시
 
       # 문자셋과 정렬 방식 설정
       MYSQL_INITDB_SKIP_TZINFO: "1"
@@ -21,7 +20,7 @@ services:
       - ./my.cnf:/etc/mysql/conf.d/my.cnf  # MySQL 설정 파일 마운트
       - db_data:/var/lib/mysql
     networks:
-      - fastapi_network
+      - hr-auto-assigner-network
 
   fastapi:
     tty: true # 어플리케이션 로그 생성
@@ -42,10 +41,13 @@ services:
       DB_PORT: ${DB_PORT}
       TEST_ENV: ${TEST_ENV}
     networks:
-      - fastapi_network
+      - hr-auto-assigner-network
+
 
 networks:
-  fastapi_network:  # 서비스 간 네트워크 정의
+  hr-auto-assigner-network: ## hr-auto-assigner-network로 연결
+    name: hr-auto-assigner-network # hr-auto-assigner-network 명칭으로 존재하도록 네트워크상에서 설정
+    driver: bridge
 
 volumes:
   db_data:  # MySQL 데이터를 영구적으로 저장하기 위한 볼륨
