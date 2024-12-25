@@ -72,8 +72,8 @@ async def lifespan(app: FastAPI):
                 spending_days INT,
                 state VARCHAR(50),
                 requirements_satisfied BOOLEAN,
-                started_at TIMESTAMP NULL DEFAULT NULL,
-                ended_at TIMESTAMP NULL DEFAULT NULL
+                started_at DATE NULL DEFAULT NULL,
+                ended_at DATE NULL DEFAULT NULL
             );
             """
 
