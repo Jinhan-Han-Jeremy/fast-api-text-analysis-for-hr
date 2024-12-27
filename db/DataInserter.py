@@ -32,12 +32,25 @@ class DataInserter:
             data = pd.read_csv(csv_file)
             data = data.where(pd.notnull(data), None)
 
+        #날짜값처리 위한 함수
+        def process_date(value):
+            """
+            날짜 값을 처리하여 유효한 날짜만 반환.
+            NULL 또는 변환 실패 시 None 반환.
+            """
+            if pd.isnull(value) or value in [None, "", "NULL"]:
+                return None
+            try:
+                # 날짜만 추출하여 반환
+                return pd.to_datetime(value, errors='coerce').date()
+            except Exception:
+                return None
 
         # started_at과 ended_at 컬럼에서 날짜만 추출
         if 'started_at' in data.columns:
-            data['started_at'] = pd.to_datetime(data['started_at'], errors='coerce').dt.date  # 날짜만 추출
+            data['started_at'] = data['started_at'].apply(process_date)
         if 'ended_at' in data.columns:
-            data['ended_at'] = pd.to_datetime(data['ended_at'], errors='coerce').dt.date  # 날짜만 추출
+            data['ended_at'] = data['ended_at'].apply(process_date)
 
         # SQL INSERT 쿼리
         insert_query = """
