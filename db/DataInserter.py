@@ -32,31 +32,33 @@ class DataInserter:
             data = pd.read_csv(csv_file)
             data = data.where(pd.notnull(data), None)
 
+
         # started_at과 ended_at 컬럼에서 날짜만 추출
         if 'started_at' in data.columns:
             data['started_at'] = pd.to_datetime(data['started_at'], errors='coerce').dt.date  # 날짜만 추출
         if 'ended_at' in data.columns:
             data['ended_at'] = pd.to_datetime(data['ended_at'], errors='coerce').dt.date  # 날짜만 추출
 
-            insert_query = """
-            INSERT INTO tasks_history (name, teammembers, available_jobs, spending_days, state, requirements_satisfied, started_at, ended_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            cursor = self.connection.cursor()
-            for _, row in data.iterrows():
-                cursor.execute(insert_query, (
-                    row['name'],
-                    row['teammembers'],
-                    row['available_jobs'],
-                    row['spending_days'] if pd.notnull(row['spending_days']) else None,
-                    row['state'],
-                    row['requirements_satisfied'],
-                    row['started_at'],
-                    row['ended_at']
-                ))
-            self.connection.commit()
-            cursor.close()
-            print("tasks_history 테이블에 CSV 데이터가 성공적으로 삽입되었습니다.")
+        # SQL INSERT 쿼리
+        insert_query = """
+        INSERT INTO tasks_history (name, teammembers, available_jobs, spending_days, state, requirements_satisfied, started_at, ended_at)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        cursor = self.connection.cursor()
+        for _, row in data.iterrows():
+            cursor.execute(insert_query, (
+                row['name'],
+                row['teammembers'],
+                row['available_jobs'],
+                row['spending_days'] if pd.notnull(row['spending_days']) else None,
+                row['state'],
+                row['requirements_satisfied'],
+                row['started_at'],  # 날짜만 포함된 값
+                row['ended_at']     # 날짜만 포함된 값
+            ))
+        self.connection.commit()
+        cursor.close()
+        print("tasks_history 테이블에 CSV 데이터가 성공적으로 삽입되었습니다.")
 
     # team_member 테이블에 데이터를 삽입하는 함수
     def insert_member_csv_to_mysql(self, csv_file):
