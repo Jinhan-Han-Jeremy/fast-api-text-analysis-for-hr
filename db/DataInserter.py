@@ -32,9 +32,11 @@ class DataInserter:
             data = pd.read_csv(csv_file)
             data = data.where(pd.notnull(data), None)
 
-            # # 시간 변환 (잘못된 값은 NaT로 처리)
-            # data['started_at'] = pd.to_datetime(data['started_at'], errors='coerce')
-            # data['ended_at'] = pd.to_datetime(data['ended_at'], errors='coerce')
+        # started_at과 ended_at 컬럼에서 날짜만 추출
+        if 'started_at' in data.columns:
+            data['started_at'] = pd.to_datetime(data['started_at'], errors='coerce').dt.date  # 날짜만 추출
+        if 'ended_at' in data.columns:
+            data['ended_at'] = pd.to_datetime(data['ended_at'], errors='coerce').dt.date  # 날짜만 추출
 
             insert_query = """
             INSERT INTO tasks_history (name, teammembers, available_jobs, spending_days, state, requirements_satisfied, started_at, ended_at)
