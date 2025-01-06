@@ -23,6 +23,7 @@
 - teammembers (VARCHAR, 최대 255자)
 - available_jobs (VARCHAR, 최대 255자)
 - spending_days (INT)
+- expected_days (INT)
 - state (VARCHAR, 최대 50자)
 - requirements_satisfied (BOOLEAN)
 - started_at (TIMESTAMP)
