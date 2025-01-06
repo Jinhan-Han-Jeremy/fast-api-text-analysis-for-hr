@@ -1,6 +1,6 @@
-name,teammembers,available_jobs,spending_days,state,requirements_satisfied,started_at,ended_at
-프로젝트 목표와 범위 설정 초기,"최프로, 이덕마, 이비례","ProjectManager, BusinessOperator",3,done,TRUE,2024-10-06,2024-10-09
-일정과 예산 계획 수립 초기,이덕마,"ProjectManager, ProductManager",2,done,TRUE,2024-10-09,2024-10-11
-팀 구성 및 역할 할당 초기,이비례,ProductManager,2,done,TRUE,2024-10-09,2024-10-11
-시스템 아키텍처 설계 초기,,Developer,,not started,FALSE,,
-이해관계자 인터뷰 및 요구사항 문서화 초기,,"ProjectManager, BusinessOperator",,not started,FALSE,,
+name,teammembers,available_jobs,spending_days,expected_days,state,requirements_satisfied,started_at,ended_at
+프로젝트 목표와 범위 설정 초기,"최프로, 이덕마, 이비례","ProjectManager, BusinessOperator",3, 1, done,TRUE,2024-10-06,2024-10-08
+일정과 예산 계획 수립 초기,이덕마,"ProjectManager, ProductManager",2, 3, done,TRUE,2024-10-09,2024-10-11
+팀 구성 및 역할 할당 초기,이비례,ProductManager,2, 4, done,TRUE,2024-10-09,2024-10-11
+시스템 아키텍처 설계 초기,,Developer,,,not started,FALSE,,
+이해관계자 인터뷰 및 요구사항 문서화 초기,,"ProjectManager, BusinessOperator",,,not started,FALSE,,

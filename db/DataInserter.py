@@ -54,8 +54,8 @@ class DataInserter:
 
         # SQL INSERT 쿼리
         insert_query = """
-        INSERT INTO tasks_history (name, teammembers, available_jobs, spending_days, state, requirements_satisfied, started_at, ended_at)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO tasks_history (name, teammembers, available_jobs, spending_days, expected_days, state, requirements_satisfied, started_at, ended_at)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cursor = self.connection.cursor()
         for _, row in data.iterrows():
@@ -64,6 +64,7 @@ class DataInserter:
                 row['teammembers'],
                 row['available_jobs'],
                 row['spending_days'] if pd.notnull(row['spending_days']) else None,
+                row['expected_days'] if pd.notnull(row['expected_days']) else None,
                 row['state'],
                 row['requirements_satisfied'],
                 row['started_at'],  # 날짜만 포함된 값

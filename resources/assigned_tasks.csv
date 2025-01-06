@@ -3,8 +3,8 @@ name,employee_role,difficulty,requirements
 프로젝트 목표와 범위 설정 후기,"ProjectManager, BusinessOperator",4,프로젝트 목표와 범위 설정 초기
 일정과 예산 계획 수립 초기,"ProjectManager, ProductManager",3,프로젝트 목표와 범위 설정 초기
 일정과 예산 계획 수립 후기,"ProjectManager, ProductManager",4,프로젝트 목표와 범위 설정 초기
-팀 구성 및 역할 할당 초기,ProductManager,3,프로젝트 목표와 범위 설정 초기
-팀 구성 및 역할 할당 후기,ProductManager,4,프로젝트 목표와 범위 설정 초기
+팀 구성 및 역할 할당 초기,"ProductManager, BusinessOperator",3,프로젝트 목표와 범위 설정 초기
+팀 구성 및 역할 할당 후기,"ProductManager, BusinessOperator",4,프로젝트 목표와 범위 설정 초기
 프로젝트 킥오프 미팅 주최 초기,"ProjectManager, BusinessOperator",4,팀 구성 및 역할 할당 초기
 프로젝트 킥오프 미팅 주최 후기,"ProjectManager, BusinessOperator",5,팀 구성 및 역할 할당 초기
 서비스 수익 분석 초기,ProductManager,4,"일정과 예산 계획 수립 초기, 팀 구성 및 역할 할당 초기"

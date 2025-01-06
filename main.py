@@ -70,6 +70,7 @@ async def lifespan(app: FastAPI):
                 teammembers VARCHAR(255),
                 available_jobs VARCHAR(255),
                 spending_days INT,
+                expected_days INT,
                 state VARCHAR(50),
                 requirements_satisfied BOOLEAN,
                 started_at DATE NULL DEFAULT NULL,
