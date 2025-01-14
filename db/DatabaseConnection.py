@@ -4,6 +4,7 @@ import os
 
 class DatabaseConnection:
     def __init__(self):
+        
         # 환경 변수 불러오기
         self.db_config = {
             "database": os.getenv("DB_NAME"),
@@ -14,11 +15,9 @@ class DatabaseConnection:
         # MySQL 연결 생성
         self.connection = self.create_connection()
 
-
     # MySQL 연결 설정
     def create_connection(self):
         try:
-            print('dddasd')
             connection = mysql.connector.connect(
                 host=self.db_config["host"],
                 database=self.db_config["database"],

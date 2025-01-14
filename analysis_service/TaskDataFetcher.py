@@ -6,50 +6,45 @@ from db.DatabaseConnection import DatabaseConnection
 app = FastAPI()
 
 # Database 작업 클래스
+# Database 작업 클래스
 class TaskDataFetcher:
-    def __init__(self):
-        self.connection = DatabaseConnection.create_connection()
-        self.tasks_info = pd.DataFrame(columns=['name', 'difficulty', 'requirements'])
+    def __init__(self, connection):
 
+        self.connection = connection  # 기존 연결을 사용
+        self.tasks_info = pd.DataFrame(columns=['name', 'difficulty', 'requirements'])
+        print("TaskDataFetcher initialized with existing connection")
 
     def fetch_tasks_data(self):
-        if self.connection is None:
+        if self.connection is None or not self.connection.is_connected():
             print("DB 연결에 실패했습니다.")
             return self.tasks_info
 
         try:
             cursor = self.connection.cursor()
-            ## 핵심 쿼리에서 제거할 쿼리정보들 추출
+            
+            # 제거할 태스크 이름 가져오기
             query_to_remove = "SELECT name FROM tasks_history"
             cursor.execute(query_to_remove)
-            task_names_to_remove = cursor.fetchall()
+            task_names_to_remove = [row[0] for row in cursor.fetchall()]  # 튜플을 리스트로 변환
 
-            # 리스트 변환 (fetchall() 결과는 튜플 리스트이므로 변환 필요)
-            task_names_to_remove_list = [name[0] for name in task_names_to_remove]
-
-            # 기본 쿼리
+            # 기본 태스크 쿼리
             query = "SELECT name, difficulty, requirements FROM tasks"
-
-            # task_names_to_remove_list가 비어있지 않으면 (제외할 이름이 있으면) 조건을 추가
-            if task_names_to_remove_list:
-                placeholders = ', '.join(['%s'] * len(task_names_to_remove_list))
+            if task_names_to_remove:
+                placeholders = ', '.join(['%s'] * len(task_names_to_remove))
                 query += f" WHERE name NOT IN ({placeholders})"
-
-            cursor.execute(query)
+            
+            cursor.execute(query, task_names_to_remove)
             rows = cursor.fetchall()
 
-            # 데이터를 DataFrame에 추가
-            for row in rows:
-                self.tasks_info = self.tasks_info.append({
-                    'name': row[0],
-                    'difficulty': row[1],
-                    'requirements': row[2]
-                }, ignore_index=True)
+            # 데이터를 리스트로 저장한 뒤 DataFrame 변환
+            task_data = [{'name': row[0], 'difficulty': row[1], 'requirements': row[2]} for row in rows]
+            self.tasks_info = pd.DataFrame(task_data)
+
+        except Exception as e:
+            print(f"데이터 가져오는 중 오류 발생: {e}")
 
         finally:
-            if self.connection.is_connected():
-                cursor.close()
-                self.connection.close()
-                print("MySQL 연결이 닫혔습니다.")
+            cursor.close()  # 연결 닫지 않음, 커서만 닫음
+            print("DB 커서가 닫혔습니다.")
 
         return self.tasks_info

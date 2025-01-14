@@ -41,12 +41,14 @@ services:
       DB_PORT: ${DB_PORT}
       TEST_ENV: ${TEST_ENV}
     networks:
-      - hr-auto-assigner-network
-
+      hr-auto-assigner-network:
+        aliases:
+          - hr-auto-assigner-fastapi  # DNS 별칭
 
 networks:
-  hr-auto-assigner-network: ## hr-auto-assigner-network로 연결
-    name: hr-auto-assigner-network # hr-auto-assigner-network 명칭으로 존재하도록 네트워크상에서 설정
+  hr-auto-assigner-network:
+    external: true  # 외부 네트워크 재활용
+    name: hr-auto-assigner-network
     driver: bridge
 
 volumes:

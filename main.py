@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from analysis_service.TaskDataFetcher import TaskDataFetcher
 from analysis_service.WorkstreamAnalyzer import WorkstreamAnalyzer
@@ -137,33 +137,46 @@ async def root():
     test_env = os.environ["TEST_ENV"]
     return {"message": "FastAPI 서버가 실행 중입니다." + " testing name :" + test_env}
 
-
-# 요청 데이터 구조 정의 (Pydantic 모델)
-class WorkstreamInput(BaseModel):
-    input_text: str
-
-
 # TaskDataFetcher, WorkstreamAnalyzer 클래스를 사용하여 데이터 처리
 @app.post("/analyze_workstream")
-async def analyze_workstream(workstream_input: WorkstreamInput):
-    """작업과 관련된 텍스트 분석 엔드포인트"""
+async def analyze_workstream(request: Request):
+    """
+    작업 관련 텍스트 분석 엔드포인트
+    """
     try:
-        # 1. TaskDataFetcher 인스턴스 생성 및 데이터 가져오기
-        task_fetcher = TaskDataFetcher()
+        # 요청 본문에서 문자열 읽기
+        work_info = await request.body()
+        work_info_str = work_info.decode("utf-8")  # 바이트 데이터를 문자열로 변환
+        print(f"Received workInfo: {work_info_str}")
+
+        # 데이터베이스 연결 생성
+        db_connection_instance = DatabaseConnection()  # 인스턴스 생성
+        if db_connection_instance.connection is None:
+            raise RuntimeError("데이터베이스 연결에 실패했습니다.")
+        
+        connection = db_connection_instance.create_connection()
+
+        
+
+        # 2. TaskDataFetcher를 사용하여 데이터 가져오기
+        task_fetcher = TaskDataFetcher(connection)
         tasks_info = task_fetcher.fetch_tasks_data()
 
         if tasks_info.empty:
             raise HTTPException(status_code=404, detail="Tasks not found")
 
-        # 2. WorkstreamAnalyzer 인스턴스를 통해 분석
-        analyzer = WorkstreamAnalyzer(tasks_info)
-        analyzed_tasks = analyzer.analyzed_texts(workstream_input.input_text)
+        print("analyze_workstream 진행중~ ")
 
-        return {"analyzed_tasks": analyzed_tasks.to_dict(orient='records')}
+        # 3. WorkstreamAnalyzer 인스턴스를 통해 분석
+        analyzer = WorkstreamAnalyzer(tasks_info)
+        analyzed_tasks = analyzer.analyzed_texts(work_info_str)
+
+        print("last ", analyzed_tasks)
+        # 4. 분석 결과 반환
+        return analyzed_tasks
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
+    
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0")

@@ -1,5 +1,8 @@
-## 운용법
-- !! docker-compose 최초 실행시 2번 연속으로 실행해야 온전히 데이터 삽입 가능
+## 실행 운용법 및 중요 사항항
+- !! docker-compose 최초 실행시 2번 연속 docker-compose up --build 실행해야 온전히 데이터 삽입 가능
+- !! 도커 운용시 alias 및 network 명칭 동일하게 설정
+- !! DB 생성은 파이썬 fastAPI에서 담당하니 spring hibernate 설정시 ddl-auto: update
+- !! fastAPI 필요 라이브러리는 requirements.txt에 보관---도커컴포즈가 자동 설치 운용 (pip install -r requirements.txt)
 ## 주요 기능
 - **역할**: kotlin-hr-auto-assigner-time-forecast 어플리케이션을 연결하여 보조적 기능들을 사용
 - https://github.com/Jinhan-Han-Jeremy/kotlin-hr-auto-assigner-time-forecast.git
@@ -22,12 +25,12 @@
 - name (VARCHAR, 최대 255자)
 - teammembers (VARCHAR, 최대 255자)
 - available_jobs (VARCHAR, 최대 255자)
-- spending_days (INT)
-- expected_days (INT)
+- spending_days (FLOAT)
+- expected_days (FLOAT)
 - state (VARCHAR, 최대 50자)
 - requirements_satisfied (BOOLEAN)
-- started_at (TIMESTAMP)
-- ended_at (TIMESTAMP)
+- started_at (DATE)
+- ended_at (DATE)
 
 ### team_member 테이블
 컬럼:
@@ -37,7 +40,7 @@
 - level (INT)
 - state (BOOLEAN)
 - performance_for_skills (JSON)
-- achievements_score float
+- achievements_score (FLOAT)
 
 ### workstream_info 테이블
 컬럼:
