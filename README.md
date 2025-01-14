@@ -1,5 +1,5 @@
-## 실행 운용법 및 중요 사항항
-- !! docker-compose 최초 실행시 2번 연속 docker-compose up --build 실행해야 온전히 데이터 삽입 가능
+## 실행 운용법 및 중요 사항
+- !! docker-compose 최초 실행시 2번 연속 docker-compose up --build 실행 -> 2번쨰부터 온전히 어플리케이션 가동
 - !! 도커 운용시 alias 및 network 명칭 동일하게 설정
 - !! DB 생성은 파이썬 fastAPI에서 담당하니 spring hibernate 설정시 ddl-auto: update
 - !! fastAPI 필요 라이브러리는 requirements.txt에 보관---도커컴포즈가 자동 설치 운용 (pip install -r requirements.txt)
