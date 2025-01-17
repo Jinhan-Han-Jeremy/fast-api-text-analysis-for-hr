@@ -4,7 +4,6 @@ import os
 
 class DatabaseConnection:
     def __init__(self):
-        
         # 환경 변수 불러오기
         self.db_config = {
             "database": os.getenv("DB_NAME"),
@@ -12,9 +11,33 @@ class DatabaseConnection:
             "password": os.getenv("DB_PASSWORD"),
             "host": os.getenv("DB_HOST")
         }
-        # MySQL 연결 생성
+
+        # 기본 DB 연결 구성 (database 제외)
+        self.default_db_config = {
+            "user": self.db_config.get("user"),
+            "password": self.db_config.get("password"),
+            "host": self.db_config.get("host")
+        }
+
+        # 데이터베이스 생성 확인 및 연결 생성
+        self.create_database_if_not_exists()
         self.connection = self.create_connection()
 
+    # 데이터베이스 생성 함수
+    def create_database_if_not_exists(self):
+        try:
+            # 기본 DB 구성으로 연결 (DB_NAME 없이)
+            connection = mysql.connector.connect(**self.default_db_config)
+            if connection.is_connected():
+                cursor = connection.cursor()
+                # 데이터베이스 생성
+                cursor.execute(f"CREATE DATABASE IF NOT EXISTS {self.db_config['database']};")
+                print(f"데이터베이스 '{self.db_config['database']}' 생성 완료 또는 이미 존재합니다.")
+                cursor.close()
+            connection.close()
+        except Error as e:
+            print(f"Error: '{e}' 발생 (데이터베이스 생성 중)")
+            
     # MySQL 연결 설정
     def create_connection(self):
         try:
@@ -32,6 +55,16 @@ class DatabaseConnection:
         except Error as e:
             print(f"Error: '{e}' 발생")
             return None
+        
+    def close(self):
+        if self.connection and self.connection.is_connected():
+            self.connection.close()
+            print("Database connection closed. 연결을 닫습니다")
+    
+    def reconnect(self):
+        if not self.is_connected():
+            print("Reconnecting to the database...")
+            self.connection = self.create_connection()
 
     # 테이블 생성 함수
     def create_tables(self, create_table_query):

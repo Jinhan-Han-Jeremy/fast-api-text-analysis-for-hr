@@ -11,12 +11,13 @@ import os
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Lifespan 이벤트 핸들러 yield를 활용해 iterator화를 시켜실행
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    load_dotenv(os.path.join(BASE_DIR, ".env"))
 
     project_root = os.getcwd()  # 현재 작업 디렉토리
     # CSV 파일 경로 설정
@@ -118,7 +119,7 @@ async def lifespan(app: FastAPI):
     finally:
         if db_connection:
             db_connection.close()  # 데이터베이스 연결 종료
-        print("Application shutdown")
+        print("Application shutdown 종료")
 
 
 
