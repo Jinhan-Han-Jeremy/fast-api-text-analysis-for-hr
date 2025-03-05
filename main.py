@@ -2,10 +2,13 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from analysis_service.TaskDataFetcher import TaskDataFetcher
 from analysis_service.WorkstreamAnalyzer import WorkstreamAnalyzer
+from analysis_service.milp_algorithm_ex import ParallelTeamScheduler
 from db.DatabaseConnection import DatabaseConnection
 from db.DataInserter import DataInserter
 from contextlib import asynccontextmanager
-
+from typing import List, Dict
+from fastapi.responses import JSONResponse
+import asyncio
 import uvicorn
 import os
 from fastapi import FastAPI
@@ -177,6 +180,61 @@ async def analyze_workstream(request: Request):
         return analyzed_tasks
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+#요청 데이터 모델 정의
+class MilpRequest(BaseModel):
+    tasks: List[str]
+    member_performances: List[Dict[str, int]]
+
+@app.post("/milp/execute", response_class=JSONResponse)
+async def execute_milp(request: MilpRequest):
+    """MILP 알고리즘 실행 및 결과 반환 API"""
+    try:
+        # 임의로 데이터를 넣어 MilpRequest 객체를 생성
+        # request = MilpRequest(
+        #     tasks=[
+        #         "일정과 예산 계획 수립 초기",
+        #         "팀 구성 및 역할 할당 초기",
+        #         "프로젝트 킥오프 미팅 주최 초기"
+        #     ],
+        #     member_performances=[
+        #         {"이프로": 4, "최프로": 3, "이덕마": 3, "최덕마": 3},
+        #         {"최프로": 3, "이덕마": 4, "최덕마": 3, "이비례": 4, "이고례": 4},
+        #         {"이프로": 4, "최프로": 3, "이비례": 4, "최비례": 3, "이고례": 4}
+        #     ]
+        # )
+        
+        print("the request milp" ,request)
+        print("the milp tasks", request.tasks)
+        print("the milp member_performances", request.member_performances)
+        
+        # JSON 데이터에서 `tasks`와 `member_performances`를 추출하여 MILP 실행
+        result = await run_milp_scheduler(request.tasks, request.member_performances)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+async def run_milp_scheduler(tasks: List[str], member_performances: List[Dict[str, int]]):
+    """MILP 알고리즘 실행을 관리하는 비동기 함수"""
+    loop = asyncio.get_running_loop()
+
+
+    scheduler = ParallelTeamScheduler(tasks, member_performances)
+    scheduler.define_data()
+    scheduler.generate_teams()
+
+    if scheduler.create_solver():
+        scheduler.define_variables()
+        scheduler.add_constraints()
+        scheduler.set_objective()
+
+        # solve()는 동기 함수이므로 별도 스레드에서 실행
+        await loop.run_in_executor(None, scheduler.solve)
+
+        # 결과 반환
+        return scheduler.get_results_to_pass()
+    
+    return {"error": "Solver could not be created."}
     
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
