@@ -47,7 +47,7 @@ services:
 
 networks:
   hr-auto-assigner-network:
-    external: true  # 외부 네트워크 재활용
+    external: true  # 외부 네트워크 재활용, 도커 컨테이너와 네트워크 살아 있다면 주석화하지 않기 
     name: hr-auto-assigner-network
     driver: bridge
 

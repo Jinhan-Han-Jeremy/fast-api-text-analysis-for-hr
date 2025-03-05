@@ -29,7 +29,7 @@ class WorkstreamAnalyzer:
             print(f"Error calculating cosine similarity: {e}")
             raise
 
-        matched_indices = similarities.argsort()[-5:][::-1]
+        matched_indices = similarities.argsort()[-6:][::-1]
         print("matched indices", matched_indices)
         return matched_indices
 
